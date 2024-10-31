@@ -30,8 +30,13 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [secondNameError, setSecondNameError] = useState("");
   const [showError, setShowError] = useState("");
+  const [showEmailError, setShowEmailError] = useState("");
+  const [showFirstNameError, setShowFirstNameError] = useState("");
+  const [showSecondNameError, setShowSecondNameError] = useState("");
   const router = useRouter();
   const {
     register,
@@ -58,21 +63,21 @@ const LoginForm = () => {
   };
   const onSubmit: SubmitHandler<LoginFormInput> = () => {
     if(!email){
-      setError("Email is required");
-      setShowError("email")
+      setEmailError("Email is required");
+      setShowEmailError("email")
       return;
     }
     if(!firstName){
-      setError("First Name is required");
-      setShowError("first")
+      setFirstNameError("First Name is required");
+      setShowFirstNameError("first")
       return;
     }
     if(!lastName) {
-      setError("Last Name is required");
-      setShowError("last")
+      setSecondNameError("Last Name is required");
+      setShowSecondNameError("last")
       return;
     }
-    setError('')
+    //removed setError('')
     const data = {
         'email': email,
         'firstName': firstName,
@@ -119,7 +124,7 @@ const LoginForm = () => {
                 />
               )}
             />
-            {error && showError==='first' ? <div style={{color: 'red', fontSize: '18px'}}>{error}</div>: <></>}
+            {firstNameError && showFirstNameError==='first' ? <div style={{color: 'red', fontSize: '18px'}}>{firstNameError}</div>: <></>}
           </StyledFormGroup>
           <StyledFormGroup style={{ marginLeft: "30px" }}>
             <StyledLabel htmlFor="lastName">
@@ -148,7 +153,7 @@ const LoginForm = () => {
                 />
               )}
             />
-                        {error && showError==='last' ? <div style={{color: 'red', fontSize: '18px'}}>{error}</div>: <></>}
+                        {secondNameError && showSecondNameError==='last' ? <div style={{color: 'red', fontSize: '18px'}}>{secondNameError}</div>: <></>}
 
           </StyledFormGroup>
          </FlexDiv>
@@ -179,7 +184,7 @@ const LoginForm = () => {
                 />
               )}
             />
-                        {error && showError==='email' ? <div style={{color: 'red', fontSize: '18px'}}>{error}</div>: <></>}
+                        {emailError && showEmailError==='email' ? <div style={{color: 'red', fontSize: '18px'}}>{emailError}</div>: <></>}
 
           </StyledFormGroup>
           <FlexDiv justifyContent="end">
