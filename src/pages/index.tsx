@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import {styled} from "@mui/material";
 import { useRouter } from 'next/router';
 
-const Header = styled("div")(({ theme }) => ({
+const Header = styled("div")(({ theme }) => ({ // attributes for the header of the homepage
   backgroundColor: "#fff",
   padding: "10px",
   display: "flex",
@@ -27,26 +27,28 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  useEffect(() => {
-    if(typeof window !== undefined){
-      setShowLogin(!localStorage.getItem('auth_token'))
+  useEffect(() => { // (for me) used for fetching data or initiating subscriptions
+    if(typeof window !== undefined){ // checks if user needs to login based on whether auth_token is in localStorage and if window exists
+      setShowLogin(!localStorage.getItem('auth_token')) //if user needs to login, then showLogin sets to the true 
       if (localStorage.getItem('email')) {
         dispatch(getUser())
       }
     }
-    if (typeof window !== 'undefined' && localStorage.getItem('auth_token')  && router.pathname !== '/auth/login') {
-      router.push('/home/');
+    if (typeof window !== 'undefined' && localStorage.getItem('auth_token')  && router.pathname !== '/auth/login') { // // ensuring correct authentication state by redirection to home page if auth_token is found in the "localStorage" and current router path isn't /auth/login
+      router.push('/home/'); 
     }
 
   }, [])
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget); // ensuring whatever is being clicked is in the correct location
   };
-  return (
+  return ( 
+  /* if nothing has been collected, rendering the page's main content area 
+  or other parts of the document (within the body of Home) */
     <>
-      <Head>
-        <title>TachVault Inc. - High performance real-time pricing engine for derivative products</title>
+      <Head>  
+        <title>TachVault Inc. - High performance real-time pricing engine for derivative products</title> 
         <meta name="description" content="High performance real-time pricing engine for derivative products" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/faviconTechVault.ico" />
@@ -58,7 +60,7 @@ export default function Home() {
           href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;600;700&display=swap"
         />
       </Head>
-      <main>
+      <main> 
       <SearchDiv style={{padding: '10px 25px'}}>
       <Box
         sx={{

@@ -72,23 +72,6 @@ const PortfoliosContent = () => {
     setOpen(false); // Close the Popper
   };
 
-  // UseEffect to initialize data and portfolios
-  // useEffect(() => {
-  //   console.log(portfolios, "portfolios", filteredPortfolios);
-  //   if (portfolios.length) {
-  //     setData(portfolios);
-  //   } else if (filteredPortfolios) {
-  //     setData(filteredPortfolios);
-  //     dispatch(setPorfolios(filteredPortfolios));
-  //   } else {
-  //     if (localStorage.getItem("portfolios")) {
-  //       console.log("setting");
-  //       dispatch(setPorfolios(JSON.parse(localStorage.getItem("portfolios"))));
-  //     }
-  //     setData([]);
-  //   }
-  //   console.log(portfolios, "portfolios");
-  // }, []);
 
   const dispatch = useDispatch();
 

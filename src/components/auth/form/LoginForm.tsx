@@ -1,5 +1,10 @@
+// these are straight from gemini (no paraphrasing done)
+
+// Import necessary libraries
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
+
+// Import styled components from StyledAuth folder
 import {
   FlexDiv,
   StyledFormGroup,
@@ -9,33 +14,45 @@ import {
   StyledLoginFormHeading,
   StyledLoginForm,
 } from "../StyledAuth";
+
+// Import components from Materials UI
 import { CircularProgress } from "@mui/material";
+
+// Import Yup validation library and resolver
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+// Import actions and selectors from the auth slice of the Redux store
 import { LoginUser, emailExists } from "@/store/authSlice";
+
+// Import hook from React
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useRouter } from "next/router";
+
+// Import action from stock slce (might need adjustment based on your store structure)
 import { setCurrentStock } from "@/store/stock";
 
+// Define the interface for from input data
 interface LoginFormInput {
   email: string;
 }
 
+// Define the validation schema using Yup
 const schema = yup.object().shape({
   email: yup.string().email().required(),
 });
 
 const LoginForm = () => {
+  // State variables for individual form fields and errors
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailError, setEmailError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [secondNameError, setSecondNameError] = useState("");
-  const [showError, setShowError] = useState("");
   const [showEmailError, setShowEmailError] = useState("");
-  const [showFirstNameError, setShowFirstNameError] = useState("");
+  const [showFirstNameError, setShowFirstNameError] = useState(false);
   const [showSecondNameError, setShowSecondNameError] = useState("");
   const router = useRouter();
   const {
@@ -65,19 +82,22 @@ const LoginForm = () => {
     if(!email){
       setEmailError("Email is required");
       setShowEmailError("email")
-      return;
+    }else {
+      setEmailError("");
+      setShowEmailError("")
     }
     if(!firstName){
       setFirstNameError("First Name is required");
-      setShowFirstNameError("first")
-      return;
+      setShowFirstNameError(true)
+    }else {
+      setFirstNameError("");
+      setShowFirstNameError(false)
     }
     if(!lastName) {
       setSecondNameError("Last Name is required");
       setShowSecondNameError("last")
       return;
     }
-    //removed setError('')
     const data = {
         'email': email,
         'firstName': firstName,
@@ -85,7 +105,6 @@ const LoginForm = () => {
     }
     dispatch(emailExists(data, router));
     dispatch(setCurrentStock({}));
-    // dispatch(LoginUser({ email }));
   };
 
   return (
@@ -111,11 +130,8 @@ const LoginForm = () => {
                   onInput={handleFirstNameChange}
                   fullWidth
                   variant="filled"
-                  // {...field}
 
                   size="small"
-                  // error={!!errors.email}
-                  // helperText={errors.email ? errors.email?.message : ""}
                   value={firstName}
                   sx={{
                     "& legend": { display: "none" },
@@ -124,7 +140,7 @@ const LoginForm = () => {
                 />
               )}
             />
-            {firstNameError && showFirstNameError==='first' ? <div style={{color: 'red', fontSize: '18px'}}>{firstNameError}</div>: <></>}
+            {showFirstNameError ? <div style={{color: 'red', fontSize: '18px'}}>{firstNameError}</div>: <></>}
           </StyledFormGroup>
           <StyledFormGroup style={{ marginLeft: "30px" }}>
             <StyledLabel htmlFor="lastName">
@@ -140,11 +156,8 @@ const LoginForm = () => {
                   onInput={handleLastNameChange}
                   fullWidth
                   variant="filled"
-                  // {...field}
 
                   size="small"
-                  // error={!!errors.email}
-                  // helperText={errors.email ? errors.email?.message : ""}
                   value={lastName}
                   sx={{
                     "& legend": { display: "none" },
@@ -174,8 +187,6 @@ const LoginForm = () => {
                   // {...field}
 
                   size="small"
-                  // error={!!errors.email}
-                  // helperText={errors.email ? errors.email?.message : ""}
                   value={email}
                   sx={{
                     "& legend": { display: "none" },

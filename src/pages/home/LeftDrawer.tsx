@@ -1,8 +1,14 @@
 "use client"
+
+// Importing the core React library
 import * as React from "react";
+// Importing the React hook for managing component state
 import { useState } from "react";
+// Imports Material-UI provided utility to make styled components
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+// Imports Material-UI component for creating a versatile layout container
 import Box from "@mui/material/Box";
+// Imports the Material-UI component for the drawer
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -66,9 +72,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  // padding: theme.spacing(0, 1),
-  // // necessary for content to be below app bar
-  // ...theme.mixins.toolbar,
   padding: 0,
 }));
 
@@ -128,7 +131,6 @@ export default function LeftDrawer() {
     setSelectedContent(content);
     console.log(content, 'content');
     router.push({pathname: router.pathname, query: { ...router.query, tab: content === 'Portfolios' ? 'Portfolios' : 'Home' } })
-    // handleDrawerClose()
   };
   const handleCloseMenu = () => {};
   const {currentUser} = useSelector((state)=>state.auth);

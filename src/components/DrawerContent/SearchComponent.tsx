@@ -104,9 +104,6 @@ const Search = ({ getResults, shouldHandle, handleOptionSelected, showResult=tru
               handleOptionSelected({...response, ...newValue});
             }
           }
-          // if (shouldHandle) {
-            
-          // }
         }}
         renderInput={(params) => (
           <TextField

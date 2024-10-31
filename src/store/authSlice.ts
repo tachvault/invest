@@ -1,6 +1,9 @@
+// createSlice is imported from the Redux toolkit 
 import { createSlice } from "@reduxjs/toolkit";
+// Axios library is imported to allow HTTP requests
 import axios from "axios";
 import { setPorfolios } from "./stock";
+
 
 const apiWithoutToken = axios.create({
     baseURL: 'https://investtachvault-default-rtdb.firebaseio.com/',
@@ -13,48 +16,56 @@ const apiWithoutToken = axios.create({
     xsrfHeaderName: "X-CSRFTOKEN",
 });
 
-
 export interface AuthStateModel {
-    isAuth: boolean;
-    isLoading: boolean;
-    currentUser: Object;
+    /* interface that checks whether the 
+    isAuth: boolean; // checking user has successfully logged in or session is valid
+    isLoading: boolean; // check if data is being fetched
+    currentUser: Object; // object which holds user data 
+    /* error property can be a error message when 
+    authetication error is present */
     error: string | null;
-    isSigningIn: Boolean;
-    token: string;
-    isAuthorized: Boolean | null | string;
-    resetMailSent: Boolean;
+    isSigningIn: Boolean; // check if user is signing in 
+    token: string; // represents the user's authetication token
+    isAuthorized: Boolean | null | string; // checks if the user permissions 
+    resetMailSent: Boolean; // 
 }
 
-
+// definining the inital state of any auth slice
 export const initialState: AuthStateModel = {
-    isAuth: false,
-    isLoading: false,
-    currentUser: {
+    isAuth: false, 
+    isLoading: false, 
+    /* currentUser property of the initial state doesn't hold 
+    any value in the  (no user data recieved) */
+    currentUser: { 
     },
     isSigningIn: false,
-    token: typeof window !== 'undefined' ? localStorage.getItem("auth_token") : '',
+    token: typeof window !== 'undefined' ? localStorage.getItem("auth_token") : '', 
+    /* get the auth token only if window still exists */
     isAuthorized: null,
     error: '',
     resetMailSent: false,
 };
 
 
-
 export const authSlice = createSlice({
-    name: "auth",
+    name: "auth", // identification within Redux store
     initialState,
+    // defining actions for updating auth state 
     reducers: {
+        // updates if user is logged in based on user data
         login: (state, action) => {
             state.token = action.payload;
-
         },
+        // updates the currentUser object based on user data
         setUser: (state, action) => {
             console.log(action.payload, 'userPayload');
             state.currentUser = action.payload;
         },
+        // updates state that checks whether user is signing in or not
         setSigningInStatus: (state) => {
             state.isSigningIn = !state.isSigningIn;
         },
+        // updates error state and sends out error message
         setError: (state, action) => {
             console.log(action.payload);
             state.error = action.payload;
@@ -67,6 +78,7 @@ export const authSlice = createSlice({
 
 
 export const {
+    // exporting these functions for use in components
     login,
     setUser,
     setError,
@@ -76,13 +88,15 @@ export const {
 export default authSlice.reducer;
 
 export function getPortfolio(email) {
+    /* takes email as input and certifies whether or not
+    the user portfolio data has been recognized. If the 
+    retrieval fails, the error gets logged */
     return async function getPortfolioThunk(dispatch) {
         try {
             const response = await apiWithoutToken.get(`/portfolio/${email?.split("@")[0]}/data.json`);
-
             const portfolioData = response.data;
-            console.log(response, response.data, portfolioData, 'response this si ');
-            // dispatch(setPorfolios(portfolioData));
+            console.log(response, response.data, portfolioData, 'response this is ');
+
         }
         catch (error) {
             console.log(error, 'error');
@@ -91,6 +105,11 @@ export function getPortfolio(email) {
 }
 
 export function emailExists(data, router) {
+    /* takes in "data", which is the user data, and the router, representing website navigation
+
+    Dispatches setSigningInStatus to inform that the user is signing in based on the response.
+    If the email exists, then retrieve portfolio. If the email doesn't exist, an error is logged.
+    */
     return async function emailExistsThunk(dispatch) {
         dispatch(setSigningInStatus());
         try {
@@ -157,6 +176,14 @@ export function emailExists(data, router) {
 
 
 export function LoginUser(data, router) {
+    /* Takes the data containing login credentials and the router
+    library for website navigation as input.
+
+    Validates the email, and indicates the signing-in progress
+    by dispatching setSigninginStatus. If the login is successful, 
+    the token and user information are stored in
+    local storage and sends user data to API. At successful login, redirects to the homepage*/
+
     return async function LoginThunk(
         dispatch,
         getState: AuthStateModel
@@ -220,6 +247,8 @@ export function LoginUser(data, router) {
 
 
 export function getUser() {
+    /* retriever user information from the API from
+    the email stored in the local storage. */
     return async function (dispatch) {
         try {
             const emailUser = localStorage.getItem('email');

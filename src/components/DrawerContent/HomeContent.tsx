@@ -167,7 +167,6 @@ const HomeContent = () => {
   }, []);
   useEffect(()=>{
     if(localStorage.getItem('email')){
-      // dispatch(getPortfolio(localStorage.getItem('email')))
       dispatch(getUserPortfolio())
       dispatch(getUser())
     }

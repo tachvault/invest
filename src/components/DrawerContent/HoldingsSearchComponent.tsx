@@ -5,6 +5,7 @@ import {
 
   StyledButtonTwo,
 } from "./StyledItems";
+// Dummy data used by HoldingSearch component to simulate real-life searches
 const dummyHoldingSearchData = [
   {
     id: 1,
@@ -33,7 +34,8 @@ const dummyHoldingSearchData = [
   },
 ];
 
-// HoldingSearch component that displays a search input and results
+/* HoldingSearch component that displays a search input.
+   The component results the visual structure of the visual search. */
 const HoldingSearch = ({ onSearchResults, onOptionSelected, handleClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
